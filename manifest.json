@@ -1,0 +1,20 @@
+{
+    "name" : "Tab Capturing & Sharing",
+    "author": "Matthew Ziemer",
+    "version" : "1.0",
+    "manifest_version" : 2,
+    "description" : "Connect and stream to your Fire TV.",
+    "homepage_url": "https://www.webrtc-experiment.com/",
+    "background": {
+        "scripts": ["popup.js"],
+    "persistent": false
+    },
+    "permissions": [
+        "tabCapture", "activeTab", "contextMenus"
+    ],
+    "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html",
+    "default_title": "Share this tab!"
+  }
+}
