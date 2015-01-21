@@ -6,11 +6,7 @@
     "description" : "Connect and stream to your Fire TV.",
     "homepage_url": "https://www.webrtc-experiment.com/",
     "background": {
-        "page": "popup.html",
-    "persistent": true
-    },
-    "background": {
-        "scripts": ["popup.js"],
+        "page": "background.html",
     "persistent": true
     },
     "permissions": [

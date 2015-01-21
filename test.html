@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Getting Started Extension's Popup</title>
+    <script src="peer.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script>
+      $( document ).ready(function() {
+        var peer = new Peer('fire', {key: '6ym85ud3e7g8ehfr'});
+        peer.on('open', function(id) {
+          console.log(id);
+          peer.on('call', function(call) {
+            // Answer the call, providing our mediaStream
+            call.answer();
+            mediaConnection.on('stream', function(stream) {
+              vid = document.createElement('video');
+              document.body.appendChild(vid);
+              vid.src = URL.createObjectURL(stream);
+              vid.play();
+            });
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
+
