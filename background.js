@@ -1,18 +1,19 @@
-var localStream, peerID;
+var localStream, peer;
 
 function checkStream(vid, span){
   if(localStream){
-    vid.src = URL.createObjectURL(localStream);
-    vid.play();
     span.innerHTML = 'Still streaming on ' + peerID + '...';
   }
 }
 
 function captureStop(span){
   if(localStream){
-      span.innerHTML = 'Stopped...';
-      localStream.stop();
-    }
+    span.innerHTML = 'Stopped...';
+    localStream.stop();
+  }
+  if(peer){
+    peer.destroy();
+  }
 }
 
 // call tab capture
@@ -23,7 +24,14 @@ function captureStop(span){
             video: true,
             videoConstraints: {
                 mandatory: {
-                    chromeMediaSource: 'tab'
+                    chromeMediaSource: 'tab',
+                    minWidth: 1280,
+                    minHeight: 720,
+                    
+                    maxWidth: 1920,
+                    maxHeight: 1080,
+                    
+                    minAspectRatio: 1.77
                 }
             }
         };
@@ -33,7 +41,7 @@ function captureStop(span){
                 span.innerHTML = 'Unable to capture the tab. Note that Chrome internal pages cannot be captured.';
                 return;
             } else {
-              var peer = new Peer('caster', {key: '6ym85ud3e7g8ehfr'});
+              peer = new Peer({key: '6ym85ud3e7g8ehfr', debug: 3});
 
               peer.on('open', function(id) {
                   peerID = id;
@@ -43,8 +51,16 @@ function captureStop(span){
                   vid.play();
 
                   // Call a peer, providing our mediaStream
-                  var call = peer.call('fire', localStream);
-                  console.log(call);
+                  var call = peer.call('fire2', localStream);
+              });
+
+              peer.on('error', function(err) {
+                if(err == 'unavailable-id'){
+                  console.log('attampting reconnect');
+                  peer.reconnect();
+                } else if(err == 'peer-unavailable'){
+                  span.innerHTML = "Could not find the firestick.  Do you have the app open?";
+                }
               });
             }
         }
